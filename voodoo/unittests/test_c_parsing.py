@@ -2,15 +2,28 @@ import unittest
 import savingiterator
 import tempfile
 import pprint
+import os
+import platform
 
 class TestCParsing( unittest.TestCase ):
     def setUp( self ):
         self.maxDiff = None
 
     def _tempfile( self, contents ):
+        #
+        # From the python documentation:
+        # Whether the name can be used to open the file a second time, while the
+        # named temporary file is still open, varies across platforms (it can be 
+        # so used on Unix; it cannot  on Windows NT or later).
+        # 
+        if platform.system() == "Windows":
+            t = tempfile.NamedTemporaryFile( suffix = ".h", delete=False )
+        else:
         t = tempfile.NamedTemporaryFile( suffix = ".h" )
         t.write( contents )
         t.flush()
+        if platform.system() == "Windows":
+          t.close()
         return t
 
     def _simpleTest( self, contents, expected ):
@@ -21,6 +34,8 @@ class TestCParsing( unittest.TestCase ):
             pprint.pprint( tested.saved )
             pprint.pprint( expected )
         self.assertEquals( tested.saved, expected )
+        if platform.system() == "Windows":
+          os.remove( contentsFile.name )
 
     def test_structDeclaration( self ):
         self._simpleTest( "struct name_of_struct;", [ dict( callbackName = "structForwardDeclaration", name = "name_of_struct" ) ] )
