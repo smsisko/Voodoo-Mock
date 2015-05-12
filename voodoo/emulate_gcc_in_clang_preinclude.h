@@ -168,7 +168,7 @@ __m128i __builtin_ia32_pcmpgtd128 ( __v4si, __v4si ) { return (__m128i){ 0, 0 };
 // unsigned char __builtin_ia32_addcarryx_u32( unsigned char, unsigned int, unsigned int, unsigned int * ) { return '\0'; }
 unsigned char __builtin_ia32_addcarryx_u64( unsigned char, unsigned long, unsigned long, unsigned long long * ) { return '\0'; }
 
-//#include <errno.h>
+#include <errno.h>
 #include <string.h>
 #include <sys/types.h>
 #include <functional>
