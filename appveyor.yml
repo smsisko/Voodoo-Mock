@@ -20,7 +20,6 @@ install:
   - cmd: wget "http://llvm.org/releases/3.6.0/LLVM-3.6.0-win32.exe"
   - cmd: 7z x LLVM-3.6.0-win32.exe
   - cmd: ren $_OUTDIR LLVM-3.6.0
-  - cmd: find .
   - cmd: move LLVM-3.6.0 c:\
   - ps: $env:PATH = 'c:\LLVM-3.6.0\bin;' + $env:PATH
 
@@ -43,10 +42,9 @@ build_script:
 
   #debug
 #  - ps: $env:PYTHONPATH
-  - cmd: dir /s c:\LLVM-3.6.0
   - ps: $env:VOODOO_ROOT_DIR
   - cmd: set
   
   #build / test Voodoo-Mock
   - ps: cd "c:\projects\Voodoo-Mock"
-  - cmd: make V=1 & echo "Content of build_unittest/voodoo/File.h" & cat %VOODOO_ROOT_DIR%\examples\1_simplest_project\build_unittest\voodoo\File.h & echo "Content of build_unittest/voodoo/Map.h" & cat %VOODOO_ROOT_DIR%\examples\1_simplest_project\build_unittest\voodoo\Map.h
+  - cmd: make V=1 & echo "Content of build_unittest/voodoo/File.h"
