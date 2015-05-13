@@ -20,9 +20,6 @@ install:
   - ps: mv '.\$_OUTDIR' LLVM-3.6.0
   - ps: $env:PATH = 'c:\LLVM-3.6.0\bin;' + $env:PATH
 
-  #let's add mingw to the path
-  #- ps: $env:PATH += ';c:\MinGW\msys\1.0\bin;c:\MinGW\bin'
-
   #let's try using mingw-w64
   - ps: cd "c:\"
   - cmd: wget "http://sourceforge.net/projects/mingw-w64/files/latest/download?source=typ_redirect" -O gcc-4.8-win32_4.8.5-20150504.7z
@@ -34,35 +31,12 @@ install:
   - cmd: C:\Python27\scripts\pip install clang==3.5
   - ps: $env:PATH = 'c:\Python27\Lib\site-packages;' + $env:PATH
 
-  #
-
- 
-  # get mingw-w64 (C:\mingw64)
-  #- ps: if($env:build_compiler -eq 'mingw' -and $env:build_platform -eq 'x64') {
-  #    invoke 'curl' '-L -o mw64.7z "http://libgd.blob.core.windows.net/mingw/x86_64-4.9.1-release-posix-seh-rt_v3-rev1.7z"';
-  #    invoke '7z' 'x -oC:\ mw64.7z'; }
-  
-  # get mingw-w64-32bit (C:\mingw32)
-  #- ps: if($env:build_compiler -eq 'mingw' -and $env:build_platform -eq 'x86' -and $env:build_bindings -eq 1) {
-  #    invoke 'curl' '-L -o mw64-32.7z "http://libgd.blob.core.windows.net/mingw/i686-4.9.1-release-posix-dwarf-rt_v3-rev1.7z"';
-  #    invoke '7z' 'x -oC:\ mw64-32.7z'; }
-  
-  # sh is breaking mingw builds; remove
-  #- for %%i in (sh.exe) do @del "%%~$PATH:i"
-
 build_script:
   
   # set env
-  #- ps: $env:VOODOO_ROOT_DIR="c:\projects\Voodoo-Mock"
-  #- ps: $env:PYTHONPATH="c:\projects\Voodoo-Mock\voodoo"
   - cmd: set VOODOO_ROOT_DIR=c:\projects\Voodoo-Mock
   - cmd: set PYTHONPATH=c:\projects\Voodoo-Mock\voodoo
 
-  #debug
-  - ps: $env:PYTHONPATH
-  - PS: $env:VOODOO_ROOT_DIR
-  - cmd: set
-  
   #build / test Voodoo-Mock
   - ps: cd "c:\projects\Voodoo-Mock"
   - cmd: make V=1
