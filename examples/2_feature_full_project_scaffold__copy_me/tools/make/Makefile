@@ -7,7 +7,11 @@ else
 endif
 
 TARGET_mapexample = cpp/MapExample/main.cpp
+ifdef SYSTEMROOT
+mapexample_LIBRARIES =
+else 
 mapexample_LIBRARIES = -lpthread
+endif
 
 #SHAREDLIBRARY_example = cpp/Namespace/object1.cpp cpp/Namespace/object2.cpp
 #example_LIBRARIES = -ldl -lrt
