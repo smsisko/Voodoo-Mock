@@ -35,10 +35,19 @@ build_script:
   
   # set env
   - cmd: set VOODOO_ROOT_DIR=c:\projects\Voodoo-Mock
-  - cmd: set PYTHONPATH=c:\projects\Voodoo-Mock\voodoo
+#  - cmd: set PYTHONPATH=c:\projects\Voodoo-Mock\voodoo
 
+  #debug
+#  - ps: $env:PYTHONPATH
+  - PS: $env:VOODOO_ROOT_DIR
+  - cmd: set
+  
   #build / test Voodoo-Mock
   - ps: cd "c:\projects\Voodoo-Mock"
   - cmd: make V=1
 
+build_failure:
 
+  - cmd: echo "Content of build_unittest/voodoo/File.h"
+  - cmd: cat %VOODOO_ROOT_DIR%\examples\1_simplest_project\build_unittest\voodoo\File.h
+  - cmd: cat %VOODOO_ROOT_DIR%\examples\1_simplest_project\build_unittest\voodoo\Map.h
