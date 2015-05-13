@@ -4,41 +4,51 @@ import tempfile
 import pprint
 import subprocess
 import os
+import platform
 
 class TestCPPParsing( unittest.TestCase ):
     def setUp( self ):
         self.maxDiff = None
 
     def _tempfile( self, contents ):
-        t = tempfile.NamedTemporaryFile( suffix = ".h" )
+        #
+        # From the python documentation:
+        # Whether the name can be used to open the file a second time, while the
+        # named temporary file is still open, varies across platforms (it can be 
+        # so used on Unix; it cannot  on Windows NT or later).
+        # 
+        if platform.system() == "Windows":
+            t = tempfile.NamedTemporaryFile( suffix = ".h", delete=False )
+        else:
+            t = tempfile.NamedTemporaryFile( suffix = ".h" )
         t.write( contents )
         t.flush()
+        if platform.system() == "Windows":
+          t.close()
         return t
-
-    def _gccCPPIncludeDir( self ):
-        if not hasattr( self, '_gccCPPIncludeDirCache' ):
-            stdarg = subprocess.check_output( "find /usr/lib/gcc -name stdarg.h", shell = True, stderr = subprocess.STDOUT ).strip()
-            self._gccCPPIncludeDirCache = os.path.dirname( stdarg )
-        return self._gccCPPIncludeDirCache
 
     def _simpleTest( self, contents, expected ):
         tested = savingiterator.SavingIterator()
         contentsFile = self._tempfile( contents )
-        tested.process( contentsFile.name, includes = [ self._gccCPPIncludeDir() ] )
+        tested.process( contentsFile.name, includes = [ ] )
         if tested.saved != expected:
             pprint.pprint( tested.saved )
             pprint.pprint( expected )
         self.assertEquals( tested.saved, expected )
+        if platform.system() == "Windows":
+          os.remove( contentsFile.name )
 
     def _testWithHeaders( self, headersContents, contents, expected ):
         tested = savingiterator.SavingIterator()
         headersContentsFile = self._tempfile( headersContents )
         contentsFile = self._tempfile( ( '#include "%s"\n' % headersContentsFile.name ) + contents )
-        tested.process( contentsFile.name, includes = [ self._gccCPPIncludeDir() ] )
+        tested.process( contentsFile.name, includes = [ ] )
         if tested.saved != expected:
             pprint.pprint( tested.saved )
             pprint.pprint( expected )
         self.assertEquals( tested.saved, expected )
+        if platform.system() == "Windows":
+          os.remove( contentsFile.name )
 
     def test_classDeclaration( self ):
         self._simpleTest( "class SuperDuper { int y; public: int x; private: int z; };", [
