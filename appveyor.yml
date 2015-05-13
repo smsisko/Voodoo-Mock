@@ -39,6 +39,7 @@ build_script:
 
   #debug
 #  - ps: $env:PYTHONPATH
+  - cmd: dir /s c:\LLVM-3.6.0\bin
   - PS: $env:VOODOO_ROOT_DIR
   - cmd: set
   
