@@ -15,9 +15,13 @@ install:
   - cinst wget
 
   #let's install the LLVM distribution
+  - cmd: mkdir LLVM_DOWNLOAD
+  - cmd: cd LLVM_DOWNLOAD
   - cmd: wget "http://llvm.org/releases/3.6.0/LLVM-3.6.0-win32.exe"
   - cmd: 7z x LLVM-3.6.0-win32.exe
   - cmd: ren $_OUTDIR LLVM-3.6.0
+  - cmd: find .
+  - cmd: move LLVM-3.6.0 c:\
   - ps: $env:PATH = 'c:\LLVM-3.6.0\bin;' + $env:PATH
 
   #let's try using mingw-w64
@@ -40,7 +44,7 @@ build_script:
   #debug
 #  - ps: $env:PYTHONPATH
   - cmd: dir /s c:\LLVM-3.6.0
-  - PS: $env:VOODOO_ROOT_DIR
+  - ps: $env:VOODOO_ROOT_DIR
   - cmd: set
   
   #build / test Voodoo-Mock
