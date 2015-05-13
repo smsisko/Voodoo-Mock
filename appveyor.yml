@@ -46,8 +46,9 @@ build_script:
   - ps: cd "c:\projects\Voodoo-Mock"
   - cmd: make V=1
 
-build_failure:
-
+after_build:
+  
   - cmd: echo "Content of build_unittest/voodoo/File.h"
   - cmd: cat %VOODOO_ROOT_DIR%\examples\1_simplest_project\build_unittest\voodoo\File.h
+  - cmd: echo "Content of build_unittest/voodoo/Map.h"
   - cmd: cat %VOODOO_ROOT_DIR%\examples\1_simplest_project\build_unittest\voodoo\Map.h
