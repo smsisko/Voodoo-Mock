@@ -17,7 +17,7 @@ install:
   #let's install the LLVM distribution
   - cmd: wget "http://llvm.org/releases/3.6.0/LLVM-3.6.0-win32.exe"
   - cmd: 7z x LLVM-3.6.0-win32.exe
-  - ps: mv '.\$_OUTDIR' LLVM-3.6.0
+  - cmd: ren $_OUTDIR LLVM-3.6.0
   - ps: $env:PATH = 'c:\LLVM-3.6.0\bin;' + $env:PATH
 
   #let's try using mingw-w64
